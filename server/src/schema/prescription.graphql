@@ -1,0 +1,39 @@
+type Prescription {
+  id: ID!
+  patient: Patient!
+  doctor: Doctor!
+  appointment: Appointment
+  medication: String!
+  dosage: String!
+  frequency: String!
+  startDate: String!
+  endDate: String
+  notes: String
+  createdAt: String!
+}
+
+input CreatePrescriptionInput {
+  patientId: ID!
+  doctorId: ID!
+  appointmentId: ID
+  medication: String!
+  dosage: String!
+  frequency: String!
+  startDate: String!
+  endDate: String
+  notes: String
+}
+
+extend type Query {
+  getPrescription(id: ID!): Prescription!
+  listPrescriptions(patientId: ID!, limit: Int, offset: Int): [Prescription!]!
+}
+
+extend type Mutation {
+  createPrescription(input: CreatePrescriptionInput!): Prescription!
+  revokePrescription(id: ID!): Prescription!
+}
+
+extend type Subscription {
+  newPrescriptionForPatient(patientId: ID!): Prescription!
+}

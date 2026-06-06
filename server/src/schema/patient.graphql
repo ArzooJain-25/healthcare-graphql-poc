@@ -1,0 +1,63 @@
+type Patient {
+  id: ID!
+  name: String!
+  dateOfBirth: String!
+  bloodType: BloodType!
+  gender: Gender!
+  phone: String!
+  email: String!
+  ssn: String!
+  insuranceId: String!
+  isActive: Boolean!
+  createdAt: String!
+  appointments: [Appointment!]!
+  prescriptions: [Prescription!]!
+}
+
+input CreatePatientInput {
+  name: String!
+  dateOfBirth: String!
+  bloodType: BloodType!
+  gender: Gender!
+  phone: String!
+  email: String!
+  ssn: String!
+  insuranceId: String!
+}
+
+input UpdatePatientInput {
+  name: String
+  phone: String
+  email: String
+  insuranceId: String
+  isActive: Boolean
+}
+
+enum BloodType {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+extend type Query {
+  getPatient(id: ID!): Patient!
+  listPatients(limit: Int, offset: Int): [Patient!]!
+  searchPatients(term: String!): [Patient!]!
+}
+
+extend type Mutation {
+  createPatient(input: CreatePatientInput!): Patient!
+  updatePatient(id: ID!, input: UpdatePatientInput!): Patient!
+  deactivatePatient(id: ID!): Patient!
+}
