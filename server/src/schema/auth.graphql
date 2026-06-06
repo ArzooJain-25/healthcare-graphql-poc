@@ -1,0 +1,42 @@
+type User {
+  id: ID!
+  email: String!
+  role: UserRole!
+  patient: Patient
+  doctor: Doctor
+  createdAt: String!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+enum UserRole {
+  ADMIN
+  DOCTOR
+  NURSE
+  PATIENT
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  role: UserRole!
+  patientId: ID
+  doctorId: ID
+}
+
+type Query {
+  me: User
+}
+
+type Mutation {
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+}

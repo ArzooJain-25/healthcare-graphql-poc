@@ -126,11 +126,24 @@ healthcare-graphql-poc/
 
 The POC is built in 6 sequential phases. Each phase is independently committable.
 
-### Phase 1 — Schema design
+### Phase 1 — Schema design ✅
 
-Define the entire GraphQL contract in SDL before writing any resolver or database code. All types, enums, input types, queries, mutations, and subscriptions are declared across split `.graphql` files and merged with `@graphql-tools/merge`. Apollo Server starts in schema-only mode — the full API is browsable in Apollo Sandbox before the database exists.
+**Branch:** `feature/phase-01-schema-design` → merged into `dev`
 
-**Status:** `[ ] Not started`
+**Completed:**
+
+- All `.graphql` SDL files written: `patient`, `doctor`, `appointment`, `prescription`, `auth`
+- Enums defined: `BloodType`, `Gender`, `AppointmentStatus`, `UserRole`
+- All Query, Mutation, and Subscription operations declared and typed
+- `mergeTypeDefs` index wiring all SDL files into one schema
+- Apollo Server starts with schema-only mode — full schema browsable in Apollo Sandbox at `localhost:4000`
+- RBAC planning table written — defines access rules for all 21 operations across 4 roles
+
+**Key files:**
+
+- `server/src/schema/*.graphql` — one file per domain entity
+- `server/src/schema/index.ts` — merges all SDL into one `typeDefs` export
+- `server/src/index.ts` — minimal Apollo Server entry point (no resolvers yet)
 
 ---
 

@@ -1,0 +1,46 @@
+type Appointment {
+  id: ID!
+  patient: Patient!
+  doctor: Doctor!
+  scheduledAt: String!
+  status: AppointmentStatus!
+  notes: String
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+input BookAppointmentInput {
+  patientId: ID!
+  doctorId: ID!
+  scheduledAt: String!
+  notes: String
+}
+
+input UpdateAppointmentInput {
+  scheduledAt: String
+  status: AppointmentStatus
+  notes: String
+}
+
+extend type Query {
+  getAppointment(id: ID!): Appointment!
+  listAppointments(patientId: ID, doctorId: ID, status: AppointmentStatus, limit: Int, offset: Int): [Appointment!]!
+}
+
+extend type Mutation {
+  bookAppointment(input: BookAppointmentInput!): Appointment!
+  updateAppointmentStatus(id: ID!, status: AppointmentStatus!, notes: String): Appointment!
+  cancelAppointment(id: ID!): Appointment!
+}
+
+type Subscription {
+  appointmentStatusChanged(patientId: ID!): Appointment!
+  newAppointmentForDoctor(doctorId: ID!): Appointment!
+}

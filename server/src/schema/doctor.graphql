@@ -1,0 +1,48 @@
+type Doctor {
+  id: ID!
+  name: String!
+  specialty: String!
+  licenseNumber: String!
+  phone: String!
+  email: String!
+  department: Department!
+  isActive: Boolean!
+  appointments: [Appointment!]!
+  prescriptions: [Prescription!]!
+}
+
+type Department {
+  id: ID!
+  name: String!
+  description: String
+  doctors: [Doctor!]!
+}
+
+input CreateDoctorInput {
+  name: String!
+  specialty: String!
+  licenseNumber: String!
+  phone: String!
+  email: String!
+  departmentId: ID!
+}
+
+input UpdateDoctorInput {
+  name: String
+  specialty: String
+  phone: String
+  email: String
+  departmentId: ID
+  isActive: Boolean
+}
+
+extend type Query {
+  getDoctor(id: ID!): Doctor!
+  listDoctors(specialty: String, limit: Int, offset: Int): [Doctor!]!
+  getDepartment(id: ID!): Department!
+  listDepartments: [Department!]!
+}
+
+extend type Mutation {
+  createDoctor(input: CreateDoctorInput!): Doctor!
+}
