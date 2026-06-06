@@ -13,6 +13,7 @@
     "@graphql-tools/merge": "^9.0.4",
     "bcrypt": "^5.1.1",
     "dataloader": "^2.2.2",
+    "dotenv": "^17.4.2",
     "graphql": "^16.8.1",
     "graphql-middleware": "^6.1.35",
     "graphql-shield": "^7.6.5",
