@@ -147,11 +147,26 @@ The POC is built in 6 sequential phases. Each phase is independently committable
 
 ---
 
-### Phase 2 — Database integration
+### Phase 2 — Database integration ✅
 
-Design the database schema in `dbdiagram.io` using DBML, then implement it in PostgreSQL with raw SQL. No ORM — all queries use `node-postgres` directly. Covers enum type alignment between PostgreSQL and GraphQL, UUID primary keys, foreign key constraints, indexed columns, and a seed script with realistic test data. A single `pg.Pool` instance is injected into Apollo context.
+**Branch:** `feature/phase-02-database` → merged into `dev`
 
-**Status:** `[ ] Not started`
+**Completed:**
+
+- DB schema designed in dbdiagram.io (DBML file at `server/sql/schema.dbml`)
+- 4 PostgreSQL custom ENUM types created matching GraphQL enums exactly
+- `001_init.sql` — all 6 tables with constraints, foreign keys, and indexes
+- `seed.sql` — 2 departments, 3 doctors, 5 patients, 10 appointments, 5 prescriptions, 6 user accounts
+- `server/src/db/index.ts` — single `pg.Pool` with typed query helper
+- Pool injected into Apollo context as `context.db`
+- `Context` TypeScript interface defined: `{ db, user, role, loaders }`
+
+**Key files:**
+
+- `server/sql/001_init.sql` — database migration
+- `server/sql/seed.sql` — test data
+- `server/src/db/index.ts` — pg Pool instance
+- `server/.env.example` — environment variable template
 
 ---
 
