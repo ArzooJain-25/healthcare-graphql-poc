@@ -1,0 +1,100 @@
+// DBML schema for healthcare_poc
+
+Enum user_role_enum {
+  ADMIN
+  DOCTOR
+  NURSE
+  PATIENT
+}
+
+Enum blood_type_enum {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+Enum gender_enum {
+  MALE
+  FEMALE
+  OTHER
+}
+
+Enum appointment_status_enum {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+Table departments {
+  id UUID [pk]
+  name varchar [unique, not null]
+  description text
+  created_at timestamp [default: `now()`]
+}
+
+Table doctors {
+  id UUID [pk]
+  name varchar [not null]
+  specialty varchar [not null]
+  license_number varchar [unique, not null]
+  phone varchar
+  email varchar [unique]
+  department_id UUID [ref: > departments.id]
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+}
+
+Table patients {
+  id UUID [pk]
+  name varchar [not null]
+  date_of_birth date
+  blood_type blood_type_enum
+  gender gender_enum
+  phone varchar
+  email varchar [unique]
+  ssn varchar [unique]
+  insurance_id varchar
+  is_active boolean [default: true]
+  created_at timestamp [default: `now()`]
+}
+
+Table users {
+  id UUID [pk]
+  email varchar [unique, not null]
+  password_hash varchar [not null]
+  role user_role_enum [not null]
+  patient_id UUID [ref: - patients.id]
+  doctor_id UUID [ref: - doctors.id]
+  created_at timestamp [default: `now()`]
+}
+
+Table appointments {
+  id UUID [pk]
+  patient_id UUID [not null, ref: > patients.id]
+  doctor_id UUID [not null, ref: > doctors.id]
+  scheduled_at timestamp [not null]
+  status appointment_status_enum [default: 'SCHEDULED']
+  notes text
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+Table prescriptions {
+  id UUID [pk]
+  patient_id UUID [not null, ref: > patients.id]
+  doctor_id UUID [not null, ref: > doctors.id]
+  appointment_id UUID [ref: > appointments.id]
+  medication varchar [not null]
+  dosage varchar [not null]
+  frequency varchar [not null]
+  start_date date [not null]
+  end_date date
+  notes text
+  created_at timestamp [default: `now()`]
+}
