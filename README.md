@@ -170,11 +170,27 @@ The POC is built in 6 sequential phases. Each phase is independently committable
 
 ---
 
-### Phase 3 — Backend resolvers & API
+### Phase 3 — Backend resolvers & API ✅
 
-Implement all Query, Mutation, and Subscription resolvers backed by raw SQL. Covers dynamic WHERE clause construction, DataLoader for batching (solving N+1), PubSub event publishing from mutations, WebSocket subscription resolvers with `withFilter`, typed GraphQL errors, and PostgreSQL error mapping. Apollo Server switches to `expressMiddleware` to support WebSocket alongside HTTP.
+**Branch:** `feature/phase-03-resolvers` → merged into `dev`
 
-**Status:** `[ ] Not started`
+**Completed:**
+
+- All Query resolvers: `getPatient`, `listPatients`, `searchPatients`, `getDoctor`, `listDoctors`, `getAppointment`, `listAppointments`, `getPrescription`, `listPrescriptions`
+- All Mutation resolvers: `createPatient`, `updatePatient`, `deactivatePatient`, `bookAppointment`, `updateAppointmentStatus`, `cancelAppointment`, `createPrescription`, `revokePrescription`
+- PubSub singleton with event constants: `APPOINTMENT_UPDATED`, `NEW_APPOINTMENT`, `NEW_PRESCRIPTION`
+- Subscription resolvers with `withFilter`: `appointmentStatusChanged`, `newAppointmentForDoctor`, `newPrescriptionForPatient`
+- DataLoader for batching: `doctorLoader`, `patientLoader`, `departmentLoader` — N+1 eliminated
+- Type resolvers using DataLoaders for all relationship fields
+- `server/src/errors.ts` — typed `GraphQLError` factories + PostgreSQL error mapper
+- Apollo Server switched to `expressMiddleware` + `graphql-ws` WebSocket on same HTTP server
+
+**Verified:**
+
+- `listPatients` query returns real seed data
+- `bookAppointment` mutation persists to DB and publishes PubSub event
+- Two-tab Sandbox subscription test: status change event received in real time
+- DataLoader: 10 appointments + nested doctors = 2 SQL queries (not 11)
 
 ---
 
