@@ -6,8 +6,8 @@ async function testConnection() {
     console.log('Testing PostgreSQL connection...');
     const departments = await query('SELECT * FROM departments');
     console.log('✅ Connection successful!');
-    console.log(`Found ${departments.length} departments:`);
-    console.table(departments);
+    console.log(`Found ${departments.rows.length} departments:`);
+    console.table(departments.rows);
   } catch (error) {
     console.error('❌ Connection failed:', error);
   } finally {

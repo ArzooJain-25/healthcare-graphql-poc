@@ -13,7 +13,7 @@ pool.on('error', (err, client) => {
   process.exit(-1);
 });
 
-export const query = async <T extends QueryResultRow = any>(text: string, params?: any[]): Promise<T[]> => {
+export const query = async <T extends QueryResultRow = any>(text: string, params?: any[]): Promise<QueryResult<T>> => {
   const result = await pool.query<T>(text, params);
-  return result.rows;
+  return result;
 };
